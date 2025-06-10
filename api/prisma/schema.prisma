@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-    id       Int    @id @default(autoincrement())
-    username String @unique
+    id       Int     @id @default(autoincrement())
+    username String  @unique
     password String
-    role     String @default("reader")
+    isAdmin  Boolean @default(false)
     posts    Post[]
 }
 
