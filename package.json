@@ -4,6 +4,7 @@
     "type": "module",
     "workspaces": [
         "api",
+        "client",
         "public-blog",
         "admin-panel"
     ],
