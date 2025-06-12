@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Post from "./pages/Post";
 import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
+import CreatePost from "./pages/CreatePost";
 import "./App.css";
 
 function App() {
@@ -15,6 +17,14 @@ function App() {
                 <Route path="/post/:id" element={<Post />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route
+                    path="/create"
+                    element={
+                        <PrivateRoute>
+                            <CreatePost />
+                        </PrivateRoute>
+                    }
+                />
             </Routes>
         </Router>
     );

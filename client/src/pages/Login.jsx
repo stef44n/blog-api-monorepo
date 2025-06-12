@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api";
+import { loginAPI } from "../api";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
     const [form, setForm] = useState({ username: "", password: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,11 +15,11 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await login(form.username, form.password);
+        const res = await loginAPI(form.username, form.password);
         if (res.error) {
             setError(res.error);
         } else {
-            localStorage.setItem("token", res.token);
+            login(res.token);
             navigate("/");
         }
     };
