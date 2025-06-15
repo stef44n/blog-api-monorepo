@@ -6,6 +6,7 @@ import Post from "./pages/Post";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
 import "./App.css";
 
 function App() {
@@ -22,6 +23,14 @@ function App() {
                     element={
                         <PrivateRoute>
                             <CreatePost />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/edit/:id"
+                    element={
+                        <PrivateRoute>
+                            <EditPost />
                         </PrivateRoute>
                     }
                 />
