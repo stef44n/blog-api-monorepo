@@ -1,19 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Automatically load user from token if available
+    // Automatically load user from token
     useEffect(() => {
         if (token) {
-            const payload = JSON.parse(atob(token.split(".")[1]));
-            setUser({ id: payload.id, username: payload.username });
+            try {
+                const payload = jwtDecode(token);
+                setUser({ id: payload.id, username: payload.username });
+            } catch (err) {
+                console.error("Invalid token", err);
+                localStorage.removeItem("token");
+                setUser(null);
+                setToken("");
+            }
         } else {
             setUser(null);
         }
+        setLoading(false);
     }, [token]);
 
     const login = (newToken) => {
@@ -24,10 +34,11 @@ export function AuthProvider({ children }) {
     const logout = () => {
         localStorage.removeItem("token");
         setToken("");
+        setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
+        <AuthContext.Provider value={{ user, token, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );
