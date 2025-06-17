@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import NotFound from "./pages/NotFound";
+
 import "./App.css";
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
                         </PrivateRoute>
                     }
                 />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
     );
