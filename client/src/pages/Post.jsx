@@ -70,18 +70,27 @@ export default function Post() {
                 </p>
 
                 {isAuthor && (
-                    <div className="flex space-x-4">
-                        <Link
-                            to={`/edit/${post.id}`}
-                            className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-                        >
-                            ✏️ Edit
-                        </Link>
+                    <div className="flex justify-between space-x-4">
+                        <div className="flex space-x-4">
+                            <Link
+                                to={`/edit/${post.id}`}
+                                className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+                            >
+                                ✏️ Edit
+                            </Link>
+                            <button
+                                onClick={handleDelete}
+                                className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+                            >
+                                🗑️ Delete
+                            </button>
+                        </div>
                         <button
-                            onClick={handleDelete}
-                            className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="text-gray-600 hover:text-gray-800 underline"
                         >
-                            🗑️ Delete
+                            Back to All Posts
                         </button>
                     </div>
                 )}
