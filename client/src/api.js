@@ -35,21 +35,26 @@ export async function getPost(id) {
     return res.json();
 }
 
-export async function createPost(title, body) {
+export async function createPost(title, body, published = false) {
     const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
         headers: headersWithAuth(),
-        body: JSON.stringify({ title, body }),
+        body: JSON.stringify({ title, body, published }),
     });
     return res.json();
 }
 
-export async function updatePost(id, title, body) {
+export async function updatePost(id, title, body, published) {
     const res = await fetch(`${API_URL}/posts/${id}`, {
         method: "PUT",
         headers: headersWithAuth(),
-        body: JSON.stringify({ title, body }),
+        body: JSON.stringify({ title, body, published }),
     });
+
+    if (!res.ok) {
+        throw new Error("Failed to update post");
+    }
+
     return res.json();
 }
 
