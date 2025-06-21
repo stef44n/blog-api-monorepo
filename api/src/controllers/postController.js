@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 export const getAllPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
-        where: { published: true },
+        // where: { published: true },
         include: { author: true, comments: true },
     });
     res.json(posts);
@@ -20,7 +20,7 @@ export const getPostById = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const { title, body, published } = req.body;
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const post = await prisma.post.create({
         data: { title, body, published, authorId: userId },
     });
