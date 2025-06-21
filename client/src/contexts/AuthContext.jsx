@@ -13,7 +13,11 @@ export function AuthProvider({ children }) {
         if (token) {
             try {
                 const payload = jwtDecode(token);
-                setUser({ id: payload.id, username: payload.username });
+                setUser({
+                    id: payload.id,
+                    username: payload.username,
+                    isAdmin: payload.isAdmin,
+                });
             } catch (err) {
                 console.error("Invalid token", err);
                 localStorage.removeItem("token");
