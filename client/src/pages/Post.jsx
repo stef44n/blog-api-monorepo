@@ -56,6 +56,8 @@ export default function Post() {
         );
 
     const isAuthor = user && user.id === post.authorId;
+    const isAdmin = user && user.isAdmin;
+    const canEditOrDelete = isAuthor || isAdmin;
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
@@ -64,20 +66,27 @@ export default function Post() {
                 <p className="text-gray-800 leading-relaxed mb-4">
                     {post.body}
                 </p>
+                {isAdmin && !isAuthor && (
+                    <p className="text-sm text-blue-600 font-semibold mb-2">
+                        Admin Access
+                    </p>
+                )}
                 <p className="text-sm text-gray-500 mb-4">
                     By {post.author?.username || "Unknown"} •{" "}
                     {new Date(post.createdAt).toLocaleDateString()}
                 </p>
 
-                {isAuthor && (
-                    <div className="flex justify-between space-x-4">
+                <div className="flex justify-between items-center mt-4">
+                    {canEditOrDelete ? (
                         <div className="flex space-x-4">
-                            <Link
-                                to={`/edit/${post.id}`}
-                                className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-                            >
-                                ✏️ Edit
-                            </Link>
+                            {isAuthor && (
+                                <Link
+                                    to={`/edit/${post.id}`}
+                                    className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+                                >
+                                    ✏️ Edit
+                                </Link>
+                            )}
                             <button
                                 onClick={handleDelete}
                                 className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
@@ -85,15 +94,18 @@ export default function Post() {
                                 🗑️ Delete
                             </button>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => navigate(-1)}
-                            className="text-gray-600 hover:text-gray-800 underline"
-                        >
-                            Back to All Posts
-                        </button>
-                    </div>
-                )}
+                    ) : (
+                        <div />
+                    )}
+
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        className="text-gray-600 hover:text-gray-800 underline"
+                    >
+                        Back
+                    </button>
+                </div>
             </div>
         </div>
     );
