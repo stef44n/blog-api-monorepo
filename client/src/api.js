@@ -65,3 +65,46 @@ export async function deletePost(id) {
     });
     return res.json();
 }
+
+// Get all comments for a specific post
+export async function getCommentsForPost(postId) {
+    const res = await fetch(`${API_URL}/comments/post/${postId}`);
+    if (!res.ok) {
+        throw new Error("Failed to fetch comments");
+    }
+    return res.json();
+}
+
+// Add a new comment to a post
+export async function addComment(body, postId) {
+    const res = await fetch(`${API_URL}/comments`, {
+        method: "POST",
+        headers: headersWithAuth(),
+        body: JSON.stringify({ body, postId }),
+    });
+
+    if (!res.ok) {
+        throw new Error("Failed to post comment");
+    }
+
+    return res.json();
+}
+
+export const updateComment = async (id, body) => {
+    const res = await fetch(`${API_URL}/comments/${id}`, {
+        method: "PUT",
+        headers: headersWithAuth(),
+        body: JSON.stringify({ body }),
+    });
+    if (!res.ok) throw new Error("Failed to update comment");
+    return res.json();
+};
+
+export const deleteComment = async (id) => {
+    const res = await fetch(`${API_URL}/comments/${id}`, {
+        method: "DELETE",
+        headers: headersWithAuth(),
+    });
+    if (!res.ok) throw new Error("Failed to delete comment");
+    return res.json();
+};
