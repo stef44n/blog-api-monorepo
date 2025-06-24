@@ -116,30 +116,42 @@ export default function Post() {
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
-            <div className="bg-white shadow-md rounded-xl p-6">
-                <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-                <p className="text-gray-800 leading-relaxed mb-4">
+            <div className="bg-white shadow-md rounded-xl p-6 space-y-6">
+                {/* Post Header */}
+                <div>
+                    {isAdmin && !isAuthor && (
+                        <p className="text-sm text-blue-600 font-semibold mt-1 text-right bg-blue-100 px-2 py-0.5 rounded mt-2 mr-2 justify-self-end">
+                            Admin Access
+                        </p>
+                    )}
+                    <h1 className="text-3xl font-bold mb-1">{post.title}</h1>
+                    <div className="text-sm text-gray-500">
+                        <span>By {post.author?.username || "Unknown"}</span>{" "}
+                        &bull;{" "}
+                        <span>
+                            {new Date(post.createdAt).toLocaleDateString()}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Post Body */}
+                <p className="text-gray-800 leading-relaxed whitespace-pre-line">
                     {post.body}
                 </p>
 
-                <p className="text-sm text-gray-500 mb-4">
-                    By {post.author?.username || "Unknown"} •{" "}
-                    {new Date(post.createdAt).toLocaleDateString()}
-                </p>
-
-                {isAdmin && !isAuthor && (
-                    <p className="text-sm text-blue-600 font-semibold mb-2">
-                        Admin Access
-                    </p>
-                )}
-
-                <div className="mt-8">
-                    <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                {/* Comments Section */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4 text-left">
+                        Comments
+                    </h2>
 
                     {user && (
-                        <form onSubmit={handleAddComment} className="mb-6">
+                        <form
+                            onSubmit={handleAddComment}
+                            className="mb-6 space-y-2"
+                        >
                             <textarea
-                                className="w-full p-2 border border-gray-300 rounded mb-2"
+                                className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 rows="3"
                                 placeholder="Write a comment..."
                                 value={commentBody}
@@ -148,7 +160,7 @@ export default function Post() {
                             <button
                                 type="submit"
                                 disabled={commentLoading}
-                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
                             >
                                 {commentLoading ? "Posting..." : "Post Comment"}
                             </button>
@@ -164,7 +176,7 @@ export default function Post() {
                             return (
                                 <li
                                     key={comment.id}
-                                    className="bg-gray-50 border border-gray-200 rounded p-3"
+                                    className="bg-gray-50 border border-gray-200 rounded p-4 flex flex-col"
                                 >
                                     {isEditing ? (
                                         <form
@@ -177,7 +189,7 @@ export default function Post() {
                                             className="space-y-2"
                                         >
                                             <textarea
-                                                className="w-full p-2 border rounded"
+                                                className="w-full p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                                                 rows="3"
                                                 value={editCommentBody}
                                                 onChange={(e) =>
@@ -186,10 +198,10 @@ export default function Post() {
                                                     )
                                                 }
                                             />
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-3">
                                                 <button
                                                     type="submit"
-                                                    className="bg-green-600 text-white px-3 py-1 rounded"
+                                                    className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 cursor-pointer"
                                                 >
                                                     Save
                                                 </button>
@@ -200,7 +212,7 @@ export default function Post() {
                                                             null
                                                         )
                                                     }
-                                                    className="text-gray-500 underline"
+                                                    className="text-gray-600 hover:text-gray-800 underline cursor-pointer"
                                                 >
                                                     Cancel
                                                 </button>
@@ -208,10 +220,10 @@ export default function Post() {
                                         </form>
                                     ) : (
                                         <>
-                                            <p className="text-gray-800">
+                                            <p className="text-gray-800 text-left">
                                                 {comment.body}
                                             </p>
-                                            <p className="text-xs text-gray-500 mt-1">
+                                            <p className="text-xs text-gray-500 mt-1 self-start">
                                                 By {comment.author} •{" "}
                                                 {new Date(
                                                     comment.createdAt
@@ -219,7 +231,7 @@ export default function Post() {
                                             </p>
 
                                             {(isCommentAuthor || isAdmin) && (
-                                                <div className="flex gap-4 mt-2 text-sm text-blue-600">
+                                                <div className="flex gap-4 mt-2 text-sm justify-end">
                                                     {isCommentAuthor && (
                                                         <button
                                                             onClick={() => {
@@ -230,7 +242,7 @@ export default function Post() {
                                                                     comment.body
                                                                 );
                                                             }}
-                                                            className="hover:underline"
+                                                            className="text-blue-600 hover:underline cursor-pointer"
                                                         >
                                                             ✏️ Edit
                                                         </button>
@@ -241,7 +253,7 @@ export default function Post() {
                                                                 comment.id
                                                             )
                                                         }
-                                                        className="hover:underline text-red-600"
+                                                        className="text-red-600 hover:underline cursor-pointer"
                                                     >
                                                         🗑️ Delete
                                                     </button>
@@ -255,20 +267,21 @@ export default function Post() {
                     </ul>
                 </div>
 
-                <div className="flex justify-between items-center mt-4">
+                {/* Edit/Delete and Back Buttons */}
+                <div className="flex justify-between items-center pt-6 border-t-3 border-gray-100">
                     {canEditOrDelete ? (
                         <div className="flex space-x-4">
                             {isAuthor && (
                                 <Link
                                     to={`/edit/${post.id}`}
-                                    className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
                                 >
                                     ✏️ Edit
                                 </Link>
                             )}
                             <button
                                 onClick={handleDelete}
-                                className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+                                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition cursor-pointer"
                             >
                                 🗑️ Delete
                             </button>
@@ -280,9 +293,9 @@ export default function Post() {
                     <button
                         type="button"
                         onClick={() => navigate(-1)}
-                        className="text-gray-600 hover:text-gray-800 underline"
+                        className="text-gray-600 hover:text-gray-800 underline cursor-pointer"
                     >
-                        Back
+                        ← Back
                     </button>
                 </div>
             </div>
