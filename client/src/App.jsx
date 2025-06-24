@@ -8,6 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import NotFound from "./pages/NotFound";
+import BecomeAdmin from "./pages/BecomeAdmin";
 
 import "./App.css";
 
@@ -20,6 +21,14 @@ function App() {
                 <Route path="/post/:id" element={<Post />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route
+                    path="/become-admin"
+                    element={
+                        <PrivateRoute>
+                            <BecomeAdmin />
+                        </PrivateRoute>
+                    }
+                />
                 <Route
                     path="/create"
                     element={

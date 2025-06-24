@@ -48,3 +48,28 @@ export const login = async (req, res) => {
         res.status(500).json({ error: "Login failed" });
     }
 };
+
+export const becomeAdmin = async (req, res) => {
+    const { password } = req.body;
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+    if (password !== ADMIN_PASSWORD) {
+        return res.status(403).json({ message: "Invalid password" });
+    }
+
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: req.user.id },
+            data: { isAdmin: true },
+        });
+
+        res.json({
+            id: updatedUser.id,
+            username: updatedUser.username,
+            isAdmin: updatedUser.isAdmin,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};

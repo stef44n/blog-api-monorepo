@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -16,19 +15,34 @@ export default function Navbar() {
                         Home
                     </Link>
                     {user && (
-                        <Link to="/create" className="hover:underline">
-                            New Post
-                        </Link>
+                        <>
+                            <Link to="/create" className="hover:underline">
+                                New Post
+                            </Link>
+                            {!user.isAdmin && (
+                                <Link
+                                    to="/become-admin"
+                                    className="hover:underline"
+                                >
+                                    Become Admin
+                                </Link>
+                            )}
+                        </>
                     )}
                 </div>
                 <div className="flex gap-4 items-center">
                     {user ? (
                         <>
-                            <span className="text-sm hidden sm:inline">
-                                Welcome,{" "}
+                            <span className="text-sm hidden sm:flex items-center gap-2">
+                                Welcome,
                                 <span className="font-medium">
                                     {user.username}
                                 </span>
+                                {user.isAdmin && (
+                                    <span className="bg-yellow-500 text-black text-xs px-2 py-0.5 rounded-md font-semibold">
+                                        Admin
+                                    </span>
+                                )}
                             </span>
                             <button
                                 onClick={logout}

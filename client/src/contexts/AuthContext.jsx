@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Automatically load user from token
     useEffect(() => {
         if (token) {
             try {
@@ -41,8 +40,14 @@ export function AuthProvider({ children }) {
         setUser(null);
     };
 
+    const updateUser = (newUser) => {
+        setUser(newUser);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+        <AuthContext.Provider
+            value={{ user, token, login, logout, loading, updateUser }}
+        >
             {children}
         </AuthContext.Provider>
     );

@@ -23,6 +23,18 @@ export const loginAPI = async (username, password) => {
     return res.json();
 };
 
+export async function becomeAdmin(password) {
+    const res = await fetch(`${API_URL}/auth/become-admin`, {
+        method: "POST",
+        headers: headersWithAuth(),
+        body: JSON.stringify({ password }),
+    });
+
+    if (!res.ok) throw new Error("Failed to become admin");
+
+    return await res.json(); // updated user object
+}
+
 export async function getAllPosts() {
     const res = await fetch(`${API_URL}/posts`);
     if (!res.ok) throw new Error("Failed to fetch posts");
