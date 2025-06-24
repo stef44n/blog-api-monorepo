@@ -32,7 +32,7 @@ export default function Post() {
                 setComments(commentData);
             } catch (err) {
                 console.error("Error fetching post:", err);
-                setPost(null); // Explicitly set to null
+                setPost(null);
             } finally {
                 setLoading(false);
             }
@@ -42,7 +42,6 @@ export default function Post() {
 
     const handleDelete = async () => {
         if (!confirm("Are you sure you want to delete this post?")) return;
-
         try {
             await deletePost(id, token);
             navigate("/");
@@ -115,8 +114,8 @@ export default function Post() {
     const canEditOrDelete = isAuthor || isAdmin;
 
     return (
-        <div className="p-6 max-w-3xl mx-auto">
-            <div className="bg-white shadow-md rounded-xl p-6 space-y-6">
+        <div className="px-4 sm:px-6 py-4 sm:py-6 max-w-3xl mx-auto">
+            <div className="bg-white shadow-md rounded-xl p-4 sm:p-6 space-y-6">
                 {/* Post Header */}
                 <div>
                     {isAdmin && !isAuthor && (
@@ -160,7 +159,7 @@ export default function Post() {
                             <button
                                 type="submit"
                                 disabled={commentLoading}
-                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
+                                className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
                             >
                                 {commentLoading ? "Posting..." : "Post Comment"}
                             </button>
@@ -198,7 +197,7 @@ export default function Post() {
                                                     )
                                                 }
                                             />
-                                            <div className="flex gap-3">
+                                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                                 <button
                                                     type="submit"
                                                     className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 cursor-pointer"
@@ -223,7 +222,7 @@ export default function Post() {
                                             <p className="text-gray-800 text-left">
                                                 {comment.body}
                                             </p>
-                                            <p className="text-xs text-gray-500 mt-1 self-start">
+                                            <p className="text-xs sm:text-sm text-gray-500 mt-1 self-start">
                                                 By {comment.author} •{" "}
                                                 {new Date(
                                                     comment.createdAt
@@ -231,7 +230,7 @@ export default function Post() {
                                             </p>
 
                                             {(isCommentAuthor || isAdmin) && (
-                                                <div className="flex gap-4 mt-2 text-sm justify-end">
+                                                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2 text-sm sm:justify-end items-start sm:items-center">
                                                     {isCommentAuthor && (
                                                         <button
                                                             onClick={() => {
@@ -268,13 +267,13 @@ export default function Post() {
                 </div>
 
                 {/* Edit/Delete and Back Buttons */}
-                <div className="flex justify-between items-center pt-6 border-t-3 border-gray-100">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pt-6 border-t border-gray-100">
                     {canEditOrDelete ? (
-                        <div className="flex space-x-4">
+                        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                             {isAuthor && (
                                 <Link
                                     to={`/edit/${post.id}`}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
+                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer text-center"
                                 >
                                     ✏️ Edit
                                 </Link>
